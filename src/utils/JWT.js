@@ -4,7 +4,7 @@ require('dotenv').config();
 const secret = process.env.JWT_SECRET;
 
 const jwtConfig = {
-    expiresIn: '15m',
+    expiresIn: '7d',
     algorithm: 'HS256',
 };
 
@@ -14,19 +14,16 @@ const generateToken = ({ email, password }) => {
 };
 
 const authenticateToken = async (token) => {
-    if (!token) {
-        const error = new Error('missing auth token');
-        error.status = 401;
-        throw error;
-    }
-
     try {
-        const decriptedData = await jwt.verify(token, secret);
-        return decriptedData;
-    } catch (err) {
-        const error = new Error('Malformed token');
-        error.status = 401;
-        throw error;
+        if (!token) {
+            const errorObject = { status: 401, message: 'Token not found' };
+            throw errorObject;
+        }
+            const decriptedData = await jwt.verify(token, secret);
+            return decriptedData;
+        } catch (err) {
+        const errorObject = { status: 401, message: 'Expired or invalid token' };
+        throw errorObject;
     }
 };
 
