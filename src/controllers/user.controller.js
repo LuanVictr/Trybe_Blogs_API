@@ -4,7 +4,7 @@ const createUser = async (req, res) => {
     try { 
     const creationInfo = req.body;
     const result = await userServices.createUser(creationInfo);
-    res.status(201).send(result);
+    res.status(201).json({ token: result });
     } catch (error) {
         res.status(error.status).json({ message: error.message });
     }

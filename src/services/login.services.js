@@ -1,6 +1,6 @@
 const joi = require('joi');
 const { generateToken } = require('../utils/JWT');
-const { user } = require('../models');
+const { User } = require('../models');
 
 const loginSchemma = joi.object({
   email: joi.string().email().required(),
@@ -13,14 +13,14 @@ const getLogin = async (bodyInfo) => {
     const errorObject = { status: 400, message: 'Some required fields are missing' };
     throw errorObject;
   }
-  const User = await user.findOne({
+  const user = await User.findOne({
     where: { email: bodyInfo.email, password: bodyInfo.password },
   });
-  if (!User) {
+  if (!user) {
     const errorObject = { status: 400, message: 'Invalid fields' };
     throw errorObject;
   }
-  const token = generateToken(User.dataValues);
+  const token = generateToken(user.dataValues);
   return token;
 };
 

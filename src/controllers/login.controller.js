@@ -4,8 +4,7 @@ const getLogin = async (req, res) => {
   try {
   const bodyInfo = req.body;
   const result = await loginServices.getLogin(bodyInfo);
-  console.log(result);
-  res.status(200).send(result);
+  res.status(200).json({ token: result });
   } catch (error) {
     res.status(error.status).json({ message: error.message });
   }

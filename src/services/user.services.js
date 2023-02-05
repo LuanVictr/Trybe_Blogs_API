@@ -1,11 +1,11 @@
 const Joi = require('joi');
-const { user } = require('../models');
+const { User } = require('../models');
 const { generateToken } = require('../utils/JWT');
 
 const userCreationSchemma = Joi.object({
     displayName: Joi.string().min(8).required(),
     email: Joi.string().email().required(),
-    password: Joi.number().min(6).required(),
+    password: Joi.string().min(6).pattern(/^[0-9]+$/).required(),
     image: Joi.string(),
 });
 
@@ -15,14 +15,14 @@ const createUser = async (creationInfo) => {
         const errorObject = { status: 400, message: error.message };
         throw errorObject;
     }
-    const existentUSer = await user.findOne({
+    const existentUSer = await User.findOne({
         where: { email: creationInfo.email },
     });
     if (existentUSer) {
         const errorObject = { status: 409, message: 'User already registered' };
         throw errorObject;
     }
-    await user.create(creationInfo);
+    await User.create(creationInfo);
     const token = generateToken({
         displayName: creationInfo.displayName,
         email: creationInfo.email,
@@ -32,12 +32,12 @@ const createUser = async (creationInfo) => {
 };
 
 const getAllUsers = async () => {
-    const users = await user.findAll();
+    const users = await User.findAll();
     return users;
 };
 
 const getUserById = async (id) => {
-    const result = await user.findByPK(id);
+    const result = await User.findByPk(id);
     if (!result) {
         const errorObject = { status: 404, message: 'User does not exist' };
         throw errorObject;
