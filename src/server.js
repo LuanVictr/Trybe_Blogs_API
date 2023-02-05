@@ -4,6 +4,7 @@ const loginController = require('./controllers/login.controller');
 const userController = require('./controllers/user.controller');
 const authenticate = require('./middleware/auth.middleware');
 const categoriesController = require('./controllers/categories.controller');
+const postController = require('./controllers/post.controller');
 
 // não remova a variável `API_PORT` ou o `listen`
 const port = process.env.API_PORT || 3000;
@@ -24,5 +25,9 @@ app.get('/user/:id', authenticate, userController.getUserById);
 app.post('/categories', authenticate, categoriesController.createCategory);
 
 app.get('/categories', authenticate, categoriesController.getCategories);
+
+app.get('/post', authenticate, postController.getAllPosts);
+
+app.get('/post/:id', authenticate, postController.getPostById);
 
 app.listen(port, () => console.log('ouvindo porta', port));

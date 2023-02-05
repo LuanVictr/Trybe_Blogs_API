@@ -6,7 +6,7 @@ const createCategory = async (req, res) => {
         const result = await categoriesServices.createCategory(categoryName);
         res.status(201).send(result);
     } catch (error) {
-        console.log(error);
+        res.status(error.status).json({ message: error.message });
     }
 };
 
