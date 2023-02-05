@@ -1,5 +1,10 @@
 const CategorieSchema = (sequelize, DataTypes) => {
-  const CategorieTable = sequelize.define('Categorie' , {
+  const CategorieTable = sequelize.define('Category' , {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true
+    },
     name: DataTypes.STRING,
   } , {
     tableName: 'categories',

@@ -1,5 +1,5 @@
 const PostCategorieSchema = (sequelize, DataTypes) => {
-  const PostCategoriesTable = sequelize.define('PostCategorie', {
+  const PostCategoriesTable = sequelize.define('PostCategory', {
     postId: {type: DataTypes.INTEGER, foreignKey: true},
     categoryId: {type: DataTypes.INTEGER, foreignKey:true}
   }, {
@@ -8,15 +8,15 @@ const PostCategorieSchema = (sequelize, DataTypes) => {
     tableName: 'post_categories'
   });
 
-  PostCategoriesTable.associate = ({Categorie, BlogPost}) => {
-    Categorie.belongsToMany(BlogPost, {
+  PostCategoriesTable.associate = ({Category, BlogPost}) => {
+    Category.belongsToMany(BlogPost, {
       as: 'BlogPosts',
       through: PostCategoriesTable,
       foreignKey: 'categoryId',
       otherKey: 'postId'
     });
 
-    BlogPost.belongsToMany(Categorie, {
+    BlogPost.belongsToMany(Category, {
       as: 'categories',
       through: PostCategoriesTable,
       foreignKey: 'postId',

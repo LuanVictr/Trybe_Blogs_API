@@ -33,11 +33,15 @@ const createUser = async (creationInfo) => {
 
 const getAllUsers = async () => {
     const users = await User.findAll();
-    return users;
+    const result = users.map(
+        ({ id, displayName, email, image }) => ({ id, displayName, email, image }),
+);
+    return result;
 };
 
 const getUserById = async (id) => {
     const result = await User.findByPk(id);
+    delete result.dataValues.password;
     if (!result) {
         const errorObject = { status: 404, message: 'User does not exist' };
         throw errorObject;
