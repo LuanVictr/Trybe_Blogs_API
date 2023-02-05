@@ -41,11 +41,11 @@ const getAllUsers = async () => {
 
 const getUserById = async (id) => {
     const result = await User.findByPk(id);
-    delete result.dataValues.password;
     if (!result) {
         const errorObject = { status: 404, message: 'User does not exist' };
         throw errorObject;
     }
+    delete result.dataValues.password;
     return result;
 };
 
